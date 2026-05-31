@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: makemeup_db
+    environment:
+      POSTGRES_USER: makemeup_user
+      POSTGRES_PASSWORD: makemeup_pass
+      POSTGRES_DB: makemeup_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

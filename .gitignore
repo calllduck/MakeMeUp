@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment variables (berisi password & API key — JANGAN masuk Git)
+.env
+.env.local
+
+# Build output
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
