@@ -1,13 +1,91 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(uuid())
+  name              String
+  email             String    @unique
+  password          String
+  role              Role
+  phone             String
+  emailVerifiedAt   DateTime?
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+
+  clientProfile     ClientProfile?
+  muaProfile        MuaProfile?
+
+  @@map("users")
+}
+
+enum Role {
+  client
+  mua
+  admin
+}
+
+model ClientProfile {
+  id                   Int       @id @default(autoincrement())
+  userId               String    @unique
+  avatarUrl            String?
+  defaultLocation      String?
+  skinType             SkinType?
+  skinTone             String?
+  skinConditions       Json?
+  sensitiveIngredients Json?
+  preferredStyles      Json?
+  preferredEvents      Json?
+  updatedAt            DateTime  @updatedAt
+
+  user                 User      @relation(fields: [userId], references: [id])
+
+  @@map("client_profiles")
+}
+
+enum SkinType {
+  normal
+  oily
+  dry
+  combination
+  sensitive
+}
+
+model MuaProfile {
+  id                     Int       @id @default(autoincrement())
+  userId                 String    @unique
+  brandName              String
+  avatarUrl              String?
+  bio                    String?
+  operationalLocation    String
+  yearsExperience        Int?
+  specializations        Json
+  makeupStyles           Json
+  canUseOwnSkinprep      Boolean   @default(true)
+  canUseClientSkinprep   Boolean   @default(true)
+  ownSkinprepIngredients Json?
+  transportType          TransportType @default(per_km)
+  transportFlatFee       Decimal?
+  transportPerKmRate     Decimal?
+  ratingAvg              Decimal   @default(0)
+  reviewCount            Int       @default(0)
+  isVerified             Boolean   @default(false)
+  deletedAt              DateTime?
+
+  user                   User      @relation(fields: [userId], references: [id])
+
+  @@map("mua_profiles")
+}
+
+enum TransportType {
+  flat
+  per_km
+  free
 }
