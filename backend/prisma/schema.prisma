@@ -80,6 +80,9 @@ model MuaProfile {
   deletedAt              DateTime?
 
   user                   User      @relation(fields: [userId], references: [id])
+  servicePackages        ServicePackage[]
+  packageAddons          PackageAddon[]
+  schedules              MuaSchedule[]
 
   @@map("mua_profiles")
 }
@@ -88,4 +91,49 @@ enum TransportType {
   flat
   per_km
   free
+}
+
+model ServicePackage {
+  id               Int      @id @default(autoincrement())
+  muaProfileId     Int
+  name             String
+  description      String?
+  basePrice        Decimal  @db.Decimal(12, 2)
+  durationMinutes  Int
+  includedServices Json
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+
+  muaProfile       MuaProfile     @relation(fields: [muaProfileId], references: [id])
+  addons           PackageAddon[]
+
+  @@map("service_packages")
+}
+
+model PackageAddon {
+  id                Int            @id @default(autoincrement())
+  muaProfileId      Int
+  servicePackageId  Int?
+  name              String
+  description       String?
+  price             Decimal        @db.Decimal(12, 2)
+  isActive          Boolean        @default(true)
+
+  muaProfile        MuaProfile     @relation(fields: [muaProfileId], references: [id])
+  servicePackage    ServicePackage? @relation(fields: [servicePackageId], references: [id])
+
+  @@map("package_addons")
+}
+
+model MuaSchedule {
+  id           Int      @id @default(autoincrement())
+  muaProfileId Int
+  date         DateTime @db.Date
+  startTime    String
+  endTime      String
+  isBlocked    Boolean  @default(false)
+
+  muaProfile   MuaProfile @relation(fields: [muaProfileId], references: [id])
+
+  @@map("mua_schedules")
 }

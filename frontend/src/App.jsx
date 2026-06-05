@@ -4,6 +4,10 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import ClientProfilePage from './pages/ClientProfilePage'
 import MuaProfilePage from './pages/MuaProfilePage'
+import MuaPackagesPage from './pages/MuaPackagesPage'
+import MuaSchedulePage from './pages/MuaSchedulePage'
+import SearchPage from './pages/SearchPage'
+import MuaDetailPage from './pages/MuaDetailPage'
 
 const App = () => {
   const { user, loading } = useAuth()
@@ -23,6 +27,10 @@ const App = () => {
       <Route path="/profile/client" element={<ClientProfilePage />} />
       <Route path="/profile/mua" element={<MuaProfilePage />} />
       <Route path="/" element={<Navigate to={user ? '/profile/client' : '/login'} />} />
+      <Route path="/mua/packages" element={<MuaPackagesPage />} />
+      <Route path="/mua/schedules" element={<MuaSchedulePage />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/mua/:id" element={<MuaDetailPage />} />
     </Routes>
   )
 }
