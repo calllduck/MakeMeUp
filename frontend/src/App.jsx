@@ -8,6 +8,10 @@ import MuaPackagesPage from './pages/MuaPackagesPage'
 import MuaSchedulePage from './pages/MuaSchedulePage'
 import SearchPage from './pages/SearchPage'
 import MuaDetailPage from './pages/MuaDetailPage'
+import BookingPage from './pages/BookingPage'
+import BookingHistoryPage from './pages/BookingHistoryPage'
+import BookingDetailPage from './pages/BookingDetailPage'
+import PaymentPage from './pages/PaymentPage'
 
 const App = () => {
   const { user, loading } = useAuth()
@@ -31,6 +35,10 @@ const App = () => {
       <Route path="/mua/schedules" element={<MuaSchedulePage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/mua/:id" element={<MuaDetailPage />} />
+      <Route path="/booking/:muaId" element={<BookingPage />} />
+      <Route path="/bookings" element={<BookingHistoryPage />} />
+      <Route path="/bookings/:id" element={<BookingDetailPage />} />
+      <Route path="/payment/:bookingId" element={<PaymentPage />} />
     </Routes>
   )
 }

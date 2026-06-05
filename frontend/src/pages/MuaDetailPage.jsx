@@ -171,6 +171,14 @@ const MuaDetailPage = () => {
           </div>
         </div>
 
+        {/* Tombol Booking */}
+        <button
+          onClick={() => navigate(`/booking/${mua.id}`)}
+          className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-xl transition"
+        >
+          Booking Sekarang
+        </button>
+
       </div>
     </div>
   )

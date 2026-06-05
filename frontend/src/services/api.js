@@ -39,4 +39,16 @@ export const searchAPI = {
   getMuaDetail: (id) => api.get(`/mua/${id}`)
 }
 
+// Booking API
+export const bookingAPI = {
+  createBooking: (data) => api.post('/bookings', data),
+  getBookings: () => api.get('/bookings'),
+  getBookingById: (id) => api.get(`/bookings/${id}`),
+  respondToBooking: (id, data) => api.patch(`/bookings/${id}/respond`, data)
+}
+
+export const paymentAPI = {
+  createPayment: (bookingId) => api.post(`/payment/bookings/${bookingId}/pay`)
+}
+
 export default api
