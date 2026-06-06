@@ -10,7 +10,7 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: process.env.PORT || 4173,
-    allowedHosts: ['all']
+    allowedHosts: ['makemeup.up.railway.app']
   },
   server: {
     host: '0.0.0.0',
