@@ -179,6 +179,13 @@ const MuaDetailPage = () => {
           Booking Sekarang
         </button>
 
+        <button
+          onClick={() => navigate(`/messages/${mua.id}?otherUserId=${mua.userId}`)}
+          className="w-full border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-3 rounded-2xl transition"
+        >
+          Kirim Pesan
+        </button>
+
       </div>
     </div>
   )

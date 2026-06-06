@@ -47,8 +47,24 @@ export const bookingAPI = {
   respondToBooking: (id, data) => api.patch(`/bookings/${id}/respond`, data)
 }
 
+// Payment API
 export const paymentAPI = {
   createPayment: (bookingId) => api.post(`/payment/bookings/${bookingId}/pay`)
+}
+
+// Review API
+export const reviewAPI = {
+  createReview: (data) => api.post('/reviews', data),
+  getMuaReviews: (muaId) => api.get(`/reviews/mua/${muaId}`),
+  replyReview: (reviewId, muaReply) => api.patch(`/reviews/${reviewId}/reply`, { muaReply })
+}
+
+// Message API
+export const messageAPI = {
+  sendMessage: (data) => api.post('/messages', data),
+  getConversation: (muaProfileId, otherUserId) =>
+    api.get('/messages/conversation', { params: { muaProfileId, otherUserId } }),
+  getInbox: () => api.get('/messages/inbox')
 }
 
 export default api

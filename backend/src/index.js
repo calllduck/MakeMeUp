@@ -13,6 +13,8 @@ const searchRoutes = require('./routes/search.routes')
 const muaRoutes = require('./routes/mua.routes')
 const bookingRoutes = require('./routes/booking.routes')
 const paymentRoutes = require('./routes/payment.routes')
+const reviewRoutes = require('./routes/review.routes')
+const messageRoutes = require('./routes/message.routes')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -27,6 +29,8 @@ app.use('/api/search', searchRoutes)
 app.use('/api/mua', muaRoutes)
 app.use('/api/bookings', bookingRoutes)
 app.use('/api/payment', paymentRoutes)
+app.use('/api/reviews', reviewRoutes)
+app.use('/api/messages', messageRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'MakeMeUp! backend is running 🎉' })

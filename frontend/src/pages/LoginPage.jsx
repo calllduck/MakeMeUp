@@ -31,12 +31,7 @@ const LoginPage = () => {
       // Simpan token dan data user ke context + localStorage
       login(token, user)
 
-      // Arahkan ke halaman sesuai role
-      if (user.role === 'mua') {
-        navigate('/profile/mua')
-      } else {
-        navigate('/profile/client')
-      }
+      navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Terjadi kesalahan, coba lagi')
     } finally {
