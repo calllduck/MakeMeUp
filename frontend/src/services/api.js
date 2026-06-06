@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'https://makemeup-production-f206.up.railway.app/api',
 })
 
 // Interceptor — otomatis sisipkan token ke setiap request
