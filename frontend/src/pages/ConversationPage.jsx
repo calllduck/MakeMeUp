@@ -77,9 +77,6 @@ export default function ConversationPage() {
         )}
         {messages.map((msg) => {
           const isMe = msg.senderId === user.id
-          console.log('msg.senderId:', msg.senderId, '| user.userId:', user.userId, '| isMe:', isMe)
-          console.log('senderId:', msg.senderId, typeof msg.senderId)
-          console.log('userId:', user.userId, typeof user.userId)
           return (
             <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm ${

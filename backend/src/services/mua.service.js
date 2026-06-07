@@ -19,7 +19,8 @@ const getMuaDetail = async (muaProfileId, requestingUserId) => {
       schedules: {
         where: {
           isBlocked: false,
-          date: { gte: new Date() } // hanya jadwal dari hari ini ke depan
+          bookingId: null,
+          date: { gte: (() => { const d = new Date(); d.setUTCHours(0, 0, 0, 0); return d })() }
         },
         orderBy: [{ date: 'asc' }, { startTime: 'asc' }]
       }

@@ -83,8 +83,8 @@ export default function BookingDetailPage() {
       <div className="max-w-2xl mx-auto space-y-6">
 
         {/* Tombol kembali */}
-        <button onClick={() => navigate('/bookings')} className="text-pink-500 text-sm hover:underline">
-          ← Kembali ke Riwayat Booking
+        <button onClick={() => navigate(user?.role === 'mua' ? '/mua/bookings' : '/bookings')} className="text-pink-500 text-sm hover:underline">
+          ← Kembali ke {user?.role === 'mua' ? 'Daftar Booking' : 'Riwayat Booking'}
         </button>
 
         {/* Header */}

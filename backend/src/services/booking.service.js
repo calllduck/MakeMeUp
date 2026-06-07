@@ -37,6 +37,14 @@ async function createBooking(clientId, data) {
 
   const totalPrice = Number(pkg.basePrice) + addonsPrice + transportFee
 
+  // Cari slot jadwal yang sesuai agar bisa di-link dan tidak bisa double-booking
+  const parsedDate = new Date(sessionDate)
+  parsedDate.setUTCHours(0, 0, 0, 0)
+  const schedule = await prisma.muaSchedule.findFirst({
+    where: { muaProfileId, date: parsedDate, startTime: sessionStart, isBlocked: false, bookingId: null }
+  })
+  if (!schedule) throw new Error('Jadwal yang dipilih tidak tersedia atau sudah dibooking')
+
   const booking = await prisma.booking.create({
     data: {
       bookingCode: generateBookingCode(),
@@ -44,7 +52,7 @@ async function createBooking(clientId, data) {
       muaProfileId,
       packageId,
       selectedAddons,
-      sessionDate: new Date(sessionDate),
+      sessionDate: parsedDate,
       sessionStart,
       sessionLocation,
       clientNotes,
@@ -52,7 +60,8 @@ async function createBooking(clientId, data) {
       addonsPrice,
       transportFee,
       totalPrice,
-      status: 'pending'
+      status: 'pending',
+      schedule: { connect: { id: schedule.id } }
     },
     include: {
       muaProfile: { select: { brandName: true } },
@@ -78,6 +87,7 @@ async function getBookings(userId, role) {
   const bookings = await prisma.booking.findMany({
     where,
     include: {
+      client: { select: { name: true } },
       muaProfile: { select: { brandName: true, avatarUrl: true } },
       package: { select: { name: true } },
       payment: { select: { status: true, method: true } }
@@ -95,7 +105,8 @@ async function getBookingById(bookingId, userId, role) {
     include: {
       muaProfile: { select: { brandName: true, avatarUrl: true, operationalLocation: true } },
       package: { select: { name: true, description: true } },
-      payment: true
+      payment: true,
+      review: true
     }
   })
 
