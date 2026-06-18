@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { profileAPI, packageAPI, scheduleAPI, bookingAPI, portfolioAPI } from '../services/api'
+import { profileAPI, packageAPI, scheduleAPI, bookingAPI, portfolioAPI, BASE_URL } from '../services/api'
 
 const formatIDR = (amount) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount)
@@ -712,7 +712,7 @@ const MuaDashboard = () => {
                   {portfolio.map(photo => (
                     <div key={photo.id} className="relative group aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-pink-50 to-rose-100">
                       <img
-                        src={`http://localhost:3000${photo.photoUrl}`}
+                        src={`${BASE_URL}${photo.photoUrl}`}
                         alt={photo.caption || 'Porto'}
                         className="w-full h-full object-cover"
                       />

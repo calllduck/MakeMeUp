@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { searchAPI } from '../services/api'
+import { searchAPI, BASE_URL } from '../services/api'
 
 const formatIDR = (amount) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount)
@@ -212,7 +212,7 @@ const MuaDetail = () => {
                 {mua.portfolios.map(photo => (
                   <div key={photo.id} className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-pink-100 to-rose-100 relative group">
                     {photo.photoUrl ? (
-                        <img src={`http://localhost:3000${photo.photoUrl}`} alt={photo.caption} className="w-full h-full object-cover" />
+                        <img src={`${BASE_URL}${photo.photoUrl}`} alt={photo.caption} className="w-full h-full object-cover" />
 
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-[#f6339a] text-4xl font-black">
