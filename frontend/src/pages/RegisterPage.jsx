@@ -106,8 +106,8 @@ const RegisterPage = () => {
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
             >
-              <option value="client">Client — saya mencari MUA</option>
-              <option value="mua">MUA — saya menawarkan jasa</option>
+              <option value="client">Client - saya mencari MUA</option>
+              <option value="mua">MUA - saya menawarkan jasa</option>
             </select>
           </div>
 
