@@ -90,7 +90,8 @@ async function getBookings(userId, role) {
       client: { select: { name: true } },
       muaProfile: { select: { brandName: true, avatarUrl: true } },
       package: { select: { name: true } },
-      payment: { select: { status: true, method: true } }
+      payment: { select: { status: true, method: true } },
+      review: { select: { id: true, rating: true, content: true } }
     },
     orderBy: { createdAt: 'desc' }
   })
