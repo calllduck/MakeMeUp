@@ -437,6 +437,13 @@ const MuaDashboard = () => {
                     <span>⏰ {b.sessionStart}</span>
                   </div>
                   <p className="text-xs text-gray-500 mb-3">📍 {b.sessionLocation}</p>
+                  {b.status === 'completed' && b.review && (
+                    <div className="mb-3 bg-yellow-50 rounded-xl px-3 py-2 text-xs text-gray-600 flex items-center gap-2">
+                      <span className="font-semibold">Review klien:</span>
+                      <span className="text-yellow-400">{'★'.repeat(b.review.rating)}{'☆'.repeat(5 - b.review.rating)}</span>
+                      <span className="text-gray-500">{b.review.content}</span>
+                    </div>
+                  )}
                   {b.clientNotes && (
                     <div className="mb-3 bg-gray-50 rounded-xl px-3 py-2 text-xs text-gray-600">
                       <span className="font-semibold">Catatan klien: </span>{b.clientNotes}
