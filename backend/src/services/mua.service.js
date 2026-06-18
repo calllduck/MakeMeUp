@@ -26,6 +26,12 @@ const getMuaDetail = async (muaProfileId, requestingUserId) => {
       },
       portfolios: {
         orderBy: { createdAt: 'desc' }
+      },
+      reviews: {
+        orderBy: { createdAt: 'desc' },
+        include: {
+          client: { select: { name: true } }
+        }
       }
     }
   })
