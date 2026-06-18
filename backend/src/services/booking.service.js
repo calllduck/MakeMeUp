@@ -149,4 +149,15 @@ async function respondToBooking(bookingId, userId, action, rejectionReason) {
   }
 }
 
-module.exports = { createBooking, getBookings, getBookingById, respondToBooking }
+async function completeBooking(bookingId, userId) {
+  const booking = await prisma.booking.findUnique({ where: { id: bookingId } })
+  if (!booking) throw new Error('Booking tidak ditemukan')
+  if (booking.clientId !== userId) throw new Error('Akses ditolak')
+  if (!['paid', 'ongoing'].includes(booking.status)) throw new Error('Booking tidak bisa dikonfirmasi selesai')
+  return await prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: 'completed' }
+  })
+}
+
+module.exports = { createBooking, getBookings, getBookingById, respondToBooking, completeBooking }

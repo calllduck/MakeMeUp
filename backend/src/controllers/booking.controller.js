@@ -46,4 +46,16 @@ async function respondToBooking(req, res) {
   }
 }
 
-module.exports = { createBooking, getBookings, getBookingById, respondToBooking }
+async function completeBooking(req, res) {
+  try {
+    const booking = await bookingService.completeBooking(
+      parseInt(req.params.id),
+      req.user.userId
+    )
+    res.json({ success: true, data: booking })
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message })
+  }
+}
+
+module.exports = { createBooking, getBookings, getBookingById, respondToBooking, completeBooking }

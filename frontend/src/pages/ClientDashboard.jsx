@@ -283,6 +283,20 @@ const ClientDashboard = () => {
                       </button>
                     )}
 
+                    {(b.status === 'paid' || b.status === 'ongoing') && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            await bookingAPI.completeBooking(b.id)
+                            fetchBookings()
+                          } catch {}
+                        }}
+                        className="text-sm font-bold bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition-colors"
+                      >
+                        ✓ Konfirmasi Selesai
+                      </button>
+                    )}
+
                     {/* Tombol review kalau sudah completed dan belum review */}
                     {b.status === 'completed' && !b.review && (
                       <button

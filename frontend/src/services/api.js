@@ -62,6 +62,7 @@ export const bookingAPI = {
   getBookingById:    (id)             => api.get(`/bookings/${id}`),
   respondToBooking:  (id, data)       => api.patch(`/bookings/${id}/respond`, data),
   cancelBooking:     (id)             => api.patch(`/bookings/${id}/cancel`),
+  completeBooking:   (id)             => api.patch(`/bookings/${id}/complete`),
 }
 
 // Payment

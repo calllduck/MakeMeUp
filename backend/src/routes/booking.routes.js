@@ -17,5 +17,6 @@ router.get('/:id', bookingController.getBookingById)
 
 // MUA terima/tolak booking — hanya MUA
 router.patch('/:id/respond', authorize('mua'), bookingController.respondToBooking)
+router.patch('/:id/complete', authorize('client'), bookingController.completeBooking)
 
 module.exports = router
