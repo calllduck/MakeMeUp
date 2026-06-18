@@ -1,27 +1,36 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
+import ClientHome from './pages/ClientHome'
+
+// Komponen shared
 import Navbar from './components/Navbar'
 
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import HomePage from './pages/HomePage'
-import DashboardPage from './pages/DashboardPage'
-import ClientProfilePage from './pages/ClientProfilePage'
-import MuaProfilePage from './pages/MuaProfilePage'
-import MuaPackagesPage from './pages/MuaPackagesPage'
-import MuaSchedulePage from './pages/MuaSchedulePage'
-import SearchPage from './pages/SearchPage'
-import MuaDetailPage from './pages/MuaDetailPage'
-import BookingPage from './pages/BookingPage'
-import BookingHistoryPage from './pages/BookingHistoryPage'
-import BookingDetailPage from './pages/BookingDetailPage'
-import PaymentPage from './pages/PaymentPage'
-import InboxPage from './pages/InboxPage'
-import ConversationPage from './pages/ConversationPage'
+// Halaman Auth
+import Auth from './pages/Auth'
 
+// Halaman publik
+import Landing from './pages/Landing'
+import Search   from './pages/Search'
+import MuaDetail from './pages/MuaDetail'
+
+// Halaman client
+import ClientDashboard from './pages/ClientDashboard'
+import Booking         from './pages/Booking'
+import Messages        from './pages/Messages'
+
+// Halaman MUA
+import MuaDashboard from './pages/MuaDashboard'
+
+// PrivateRoute — penjaga halaman yang butuh login
+// Kalau belum login, otomatis dikirim ke /login
+// Kalau role tidak sesuai, dikirim ke halaman utama
 const PrivateRoute = ({ children, role }) => {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-400">Memuat...</div>
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center text-gray-400">
+      Memuat...
+    </div>
+  )
   if (!user) return <Navigate to="/login" />
   if (role && user.role !== role) return <Navigate to="/" />
   return children
@@ -31,43 +40,53 @@ const App = () => {
   const { user, loading } = useAuth()
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center text-gray-400">Memuat...</div>
+    <div className="min-h-screen flex items-center justify-center text-gray-400">
+      Memuat...
+    </div>
   )
 
   return (
     <>
       <Navbar />
       <Routes>
-        {/* Public */}
-        <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/register" element={!user ? <RegisterPage /> : <Navigate to="/" />} />
-
-        {/* Home — beda per role */}
+        {/* Halaman utama — redirect sesuai role */}
         <Route path="/" element={
-          !user ? <Navigate to="/login" /> :
-          user.role === 'mua' ? <DashboardPage /> :
-          <HomePage />
+          !user              ? <Landing /> :
+          user.role === 'mua' ? <Navigate to="/dashboard/mua" /> :
+                               <Navigate to="/home/client" />
         } />
 
-        {/* Client routes */}
-        <Route path="/search" element={<PrivateRoute role="client"><SearchPage /></PrivateRoute>} />
-        <Route path="/mua/:id" element={<PrivateRoute role="client"><MuaDetailPage /></PrivateRoute>} />
-        <Route path="/booking/:muaId" element={<PrivateRoute role="client"><BookingPage /></PrivateRoute>} />
-        <Route path="/bookings" element={<PrivateRoute role="client"><BookingHistoryPage /></PrivateRoute>} />
-        <Route path="/bookings/:id" element={<PrivateRoute role="client"><BookingDetailPage /></PrivateRoute>} />
-        <Route path="/payment/:bookingId" element={<PrivateRoute role="client"><PaymentPage /></PrivateRoute>} />
-        <Route path="/profile/client" element={<PrivateRoute role="client"><ClientProfilePage /></PrivateRoute>} />
+        {/* Auth — kalau sudah login, tidak bisa akses lagi */}
+        <Route path="/login"    element={!user ? <Auth mode="login"    /> : <Navigate to="/" />} />
+        <Route path="/register" element={!user ? <Auth mode="register" /> : <Navigate to="/" />} />
 
-        {/* MUA routes */}
-        <Route path="/mua/bookings" element={<PrivateRoute role="mua"><BookingHistoryPage /></PrivateRoute>} />
-        <Route path="/mua/bookings/:id" element={<PrivateRoute role="mua"><BookingDetailPage /></PrivateRoute>} />
-        <Route path="/mua/packages" element={<PrivateRoute role="mua"><MuaPackagesPage /></PrivateRoute>} />
-        <Route path="/mua/schedules" element={<PrivateRoute role="mua"><MuaSchedulePage /></PrivateRoute>} />
-        <Route path="/profile/mua" element={<PrivateRoute role="mua"><MuaProfilePage /></PrivateRoute>} />
+        {/* Publik */}
+        <Route path="/search"   element={<Search />} />
+        <Route path="/mua/:id"  element={<MuaDetail />} />
+
+        {/* Client */}
+        <Route path="/dashboard/client" element={
+          <PrivateRoute role="client"><ClientDashboard /></PrivateRoute>
+        } />
+        <Route path="/booking/:muaId" element={
+          <PrivateRoute role="client"><Booking /></PrivateRoute>
+        } />
+
+        {/* MUA */}
+        <Route path="/dashboard/mua" element={
+          <PrivateRoute role="mua"><MuaDashboard /></PrivateRoute>
+        } />
 
         {/* Shared */}
-        <Route path="/inbox" element={<PrivateRoute><InboxPage /></PrivateRoute>} />
-        <Route path="/messages/:muaProfileId" element={<PrivateRoute><ConversationPage /></PrivateRoute>} />
+        <Route path="/messages"          element={<PrivateRoute><Messages /></PrivateRoute>} />
+        <Route path="/messages/:muaProfileId" element={<PrivateRoute><Messages /></PrivateRoute>} />
+
+        <Route path="/home/client" element={
+        <PrivateRoute role="client"><ClientHome /></PrivateRoute>} />
+
+        {/* Fallback — kalau URL tidak dikenal */}
+        <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </>
   )

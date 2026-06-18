@@ -14,57 +14,82 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Package API
+// Auth
+export const authAPI = {
+  register: (data) => api.post('/auth/register', data),
+  login:    (data) => api.post('/auth/login', data),
+}
+
+// Profile
+export const profileAPI = {
+  getClientProfile: ()     => api.get('/profile/client'),
+  updateClientProfile: (data) => api.put('/profile/client', data),
+  getMuaProfile: ()        => api.get('/profile/mua'),
+  updateMuaProfile: (data) => api.put('/profile/mua', data),
+}
+
+// Package & Add-on
 export const packageAPI = {
-  getPackages: () => api.get('/packages'),
-  createPackage: (data) => api.post('/packages', data),
+  getPackages:   ()       => api.get('/packages'),
+  createPackage: (data)   => api.post('/packages', data),
   updatePackage: (id, data) => api.put(`/packages/${id}`, data),
-  deletePackage: (id) => api.delete(`/packages/${id}`),
-  getAddons: () => api.get('/packages/addons'),
-  createAddon: (data) => api.post('/packages/addons', data),
-  deleteAddon: (id) => api.delete(`/packages/addons/${id}`)
+  deletePackage: (id)     => api.delete(`/packages/${id}`),
+  getAddons:     ()       => api.get('/packages/addons'),
+  createAddon:   (data)   => api.post('/packages/addons', data),
+  deleteAddon:   (id)     => api.delete(`/packages/addons/${id}`),
 }
 
-// Schedule API
+// Schedule
 export const scheduleAPI = {
-  getSchedules: () => api.get('/schedules'),
-  createSchedule: (data) => api.post('/schedules', data),
-  deleteSchedule: (id) => api.delete(`/schedules/${id}`),
-  toggleBlock: (id) => api.patch(`/schedules/${id}/block`)
+  getSchedules:    ()   => api.get('/schedules'),
+  createSchedule:  (data) => api.post('/schedules', data),
+  deleteSchedule:  (id) => api.delete(`/schedules/${id}`),
+  toggleBlock:     (id) => api.patch(`/schedules/${id}/block`),
 }
 
-// Search & MUA detail API
+// Search & MUA detail
 export const searchAPI = {
-  searchMUA: (params) => api.get('/search', { params }),
-  getMuaDetail: (id) => api.get(`/mua/${id}`)
+  searchMUA:    (params) => api.get('/search', { params }),
+  getMuaDetail: (id)     => api.get(`/mua/${id}`),
 }
 
-// Booking API
+// Booking
 export const bookingAPI = {
-  createBooking: (data) => api.post('/bookings', data),
-  getBookings: () => api.get('/bookings'),
-  getBookingById: (id) => api.get(`/bookings/${id}`),
-  respondToBooking: (id, data) => api.patch(`/bookings/${id}/respond`, data)
+  createBooking:     (data)           => api.post('/bookings', data),
+  getBookings:       ()               => api.get('/bookings'),
+  getBookingById:    (id)             => api.get(`/bookings/${id}`),
+  respondToBooking:  (id, data)       => api.patch(`/bookings/${id}/respond`, data),
+  cancelBooking:     (id)             => api.patch(`/bookings/${id}/cancel`),
 }
 
-// Payment API
+// Payment
 export const paymentAPI = {
-  createPayment: (bookingId) => api.post(`/payment/bookings/${bookingId}/pay`)
+  createPayment: (bookingId) => api.post(`/payment/bookings/${bookingId}/pay`),
 }
 
-// Review API
+// Review
 export const reviewAPI = {
-  createReview: (data) => api.post('/reviews', data),
-  getMuaReviews: (muaId) => api.get(`/reviews/mua/${muaId}`),
-  replyReview: (reviewId, muaReply) => api.patch(`/reviews/${reviewId}/reply`, { muaReply })
+  createReview:   (data)              => api.post('/reviews', data),
+  getMuaReviews:  (muaId)             => api.get(`/reviews/mua/${muaId}`),
+  replyReview:    (reviewId, muaReply) => api.patch(`/reviews/${reviewId}/reply`, { muaReply }),
 }
 
-// Message API
+// Message
 export const messageAPI = {
-  sendMessage: (data) => api.post('/messages', data),
+  sendMessage:     (data)                    => api.post('/messages', data),
   getConversation: (muaProfileId, otherUserId) =>
     api.get('/messages/conversation', { params: { muaProfileId, otherUserId } }),
-  getInbox: () => api.get('/messages/inbox')
+  getInbox:        ()                        => api.get('/messages/inbox'),
+}
+
+// Portfolio
+export const portfolioAPI = {
+  getPortfolio: (muaProfileId) => api.get(`/portfolio/${muaProfileId}`),
+  upload: (formData) =>
+    api.post('/portfolio', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  delete: (photoId) => api.delete(`/portfolio/${photoId}`),
 }
 
 export default api
