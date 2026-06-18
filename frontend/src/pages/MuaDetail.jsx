@@ -202,14 +202,14 @@ const MuaDetail = () => {
         {/* ── Portofolio ── */}
         {tab === 'porto' && (
           <div>
-            {!mua.portfolio || mua.portfolio.length === 0 ? (
+            {!mua.portfolios || mua.portfolios.length === 0 ? (
               <div className="text-center py-16 text-gray-400">
                 <div className="text-4xl mb-3">🖼</div>
                 <p className="font-semibold">Belum ada portofolio</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {mua.portfolio.map(photo => (
+                {mua.portfolios.map(photo => (
                   <div key={photo.id} className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-pink-100 to-rose-100 relative group">
                     {photo.photoUrl ? (
                         <img src={`http://localhost:3000${photo.photoUrl}`} alt={photo.caption} className="w-full h-full object-cover" />

@@ -14,6 +14,7 @@ const bookingRoutes = require('./routes/booking.routes')
 const paymentRoutes = require('./routes/payment.routes')
 const reviewRoutes = require('./routes/review.routes')
 const messageRoutes = require('./routes/message.routes')
+const portfolioRoutes = require('./routes/portfolio.routes')
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use(cors({
   credentials: true,
 }))
 app.use(express.json())
+app.use('/uploads', express.static(require('path').join(__dirname, '../uploads')))
 app.use('/api/auth', authRoutes)
 app.use('/api/profile', profileRoutes)
 app.use('/api/packages', packageRoutes)
@@ -32,6 +34,7 @@ app.use('/api/bookings', bookingRoutes)
 app.use('/api/payment', paymentRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/messages', messageRoutes)
+app.use('/api/portfolio', portfolioRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'MakeMeUp! backend is running 🎉' })

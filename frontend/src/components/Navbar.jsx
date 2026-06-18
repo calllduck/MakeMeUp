@@ -26,6 +26,7 @@ const Navbar = () => {
   }
 
   const isHome = location.pathname === '/home/client' || location.pathname === '/'
+  const isMuaPage = user?.role === 'mua'
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-white/96 backdrop-blur-md border-b border-gray-100 z-50">
@@ -45,7 +46,7 @@ const Navbar = () => {
         </button>
 
         {/* Search pill — tampil di semua halaman kecuali home */}
-        {!isHome && (
+        {!isHome && !isMuaPage && (
           <button
             onClick={() => go('/search')}
             className="hidden md:flex items-center gap-2 flex-1 max-w-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-full px-4 py-2 text-left transition-colors"

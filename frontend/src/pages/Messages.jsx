@@ -47,8 +47,8 @@ const Messages = () => {
             lastMessage:  '',
           })
           setMessages([])
-        } catch {
-          // Kalau gagal fetch, tetap buat conversation dengan info minimal
+        } catch (err) {
+          console.error('initNewConvo error:', err)
           setActiveConvo({
             muaProfileId: parseInt(muaProfileId),
             otherUserId:  null,
@@ -71,7 +71,15 @@ const Messages = () => {
     setInboxLoading(true)
     try {
       const res = await messageAPI.getInbox()
-      setInbox(res.data.data)
+      // Transform data inbox ke format conversation
+      const transformed = res.data.data.map(msg => ({
+        muaProfileId: msg.muaProfileId,
+        muaBrandName: msg.muaProfile?.brandName || 'MUA',
+        otherUserId: msg.senderId === user.id ? msg.receiverId : msg.senderId,
+        otherName: msg.senderId === user.id ? msg.receiver?.name : msg.sender?.name,
+        lastMessage: msg.content,
+      }))
+      setInbox(transformed)
     } catch { } finally {
       setInboxLoading(false)
     }
@@ -83,7 +91,7 @@ const Messages = () => {
     try {
       const res = await messageAPI.getConversation(
         convo.muaProfileId,
-        user.role === 'mua' ? convo.clientId : convo.otherUserId
+        convo.otherUserId
       )
       setMessages(res.data.data)
     } catch { } finally {
@@ -97,7 +105,7 @@ const Messages = () => {
     setSending(true)
     try {
       await messageAPI.sendMessage({
-        receiverId:   user.role === 'mua' ? activeConvo.clientId : activeConvo.otherUserId,
+        receiverId: activeConvo.otherUserId,
         muaProfileId: activeConvo.muaProfileId,
         content:      newMsg.trim(),
       })

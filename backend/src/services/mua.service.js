@@ -23,6 +23,9 @@ const getMuaDetail = async (muaProfileId, requestingUserId) => {
           date: { gte: (() => { const d = new Date(); d.setUTCHours(0, 0, 0, 0); return d })() }
         },
         orderBy: [{ date: 'asc' }, { startTime: 'asc' }]
+      },
+      portfolios: {
+        orderBy: { createdAt: 'desc' }
       }
     }
   })

@@ -181,6 +181,11 @@ const MuaDashboard = () => {
 
   // ── Save package ──
   const handleSavePkg = async () => {
+    if (!profile) {
+      alert('Lengkapi profil MUA kamu dulu sebelum menambah paket! Pergi ke tab Profil.')
+      setTab('profile')
+      return
+    }
     setPkgSaving(true)
     try {
       const data = {
@@ -715,6 +720,9 @@ const MuaDashboard = () => {
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-3">
                         {photo.caption && (
                           <p className="text-white text-xs text-center font-medium">{photo.caption}</p>
+                        )}
+                        {photo.style && (
+                          <p className="text-white text-xs text-center opacity-75">#{photo.style}</p>
                         )}
                         <button
                           onClick={() => handleDeletePhoto(photo.id)}

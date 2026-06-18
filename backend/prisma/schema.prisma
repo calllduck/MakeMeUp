@@ -91,6 +91,7 @@ model MuaProfile {
   bookings               Booking[]
   reviews                Review[]
   messages               Message[]
+  portfolios             Portfolio[]
 
   @@map("mua_profiles")
 }
@@ -226,4 +227,17 @@ model Message {
   muaProfile MuaProfile @relation(fields: [muaProfileId], references: [id])
 
   @@map("messages")
+}
+
+model Portfolio {
+  id           Int        @id @default(autoincrement())
+  muaProfileId Int        @map("mua_profile_id")
+  photoUrl     String     @map("photo_url")
+  caption      String?
+  style        String?
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  muaProfile   MuaProfile @relation(fields: [muaProfileId], references: [id])
+
+  @@map("portfolios")
 }

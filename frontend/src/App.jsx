@@ -51,9 +51,9 @@ const App = () => {
       <Routes>
         {/* Halaman utama — redirect sesuai role */}
         <Route path="/" element={
-          !user              ? <Landing /> :
+          !user              ? <Navigate to="/login" /> :
           user.role === 'mua' ? <Navigate to="/dashboard/mua" /> :
-                               <Navigate to="/home/client" />
+                              <Navigate to="/home/client" />
         } />
 
         {/* Auth — kalau sudah login, tidak bisa akses lagi */}

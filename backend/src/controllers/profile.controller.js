@@ -122,13 +122,14 @@ const updateMuaProfile = async (req, res) => {
     if (canUseClientSkinprep !== undefined) data.canUseClientSkinprep = canUseClientSkinprep;
     if (ownSkinprepIngredients !== undefined) data.ownSkinprepIngredients = ownSkinprepIngredients;
     if (transportType !== undefined) data.transportType = transportType;
-    if (transportFlatFee !== undefined) data.transportFlatFee = transportFlatFee;
-    if (transportPerKmRate !== undefined) data.transportPerKmRate = transportPerKmRate;
+    if (transportFlatFee !== undefined) data.transportFlatFee = transportFlatFee === '' ? null : transportFlatFee;
+    if (transportPerKmRate !== undefined) data.transportPerKmRate = transportPerKmRate === '' ? null : transportPerKmRate;
 
     const profile = await profileService.upsertMuaProfile(req.user.userId, data);
 
     return sendSuccess(res, profile, 'Profil MUA berhasil diupdate');
   } catch (error) {
+    console.error('updateMuaProfile error:', error)
     return sendError(res, 'Terjadi kesalahan server', 500);
   }
 };

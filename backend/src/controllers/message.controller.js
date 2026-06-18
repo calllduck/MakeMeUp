@@ -5,10 +5,11 @@ const sendMessage = async (req, res) => {
   try {
     const { receiverId, muaProfileId, content } = req.body
     const message = await messageService.sendMessage(
-      req.user.userId, parseInt(receiverId), parseInt(muaProfileId), content
+      req.user.userId, receiverId, parseInt(muaProfileId), content
     )
     sendSuccess(res, message, 'Pesan terkirim', 201)
   } catch (err) {
+    console.error('sendMessage error:', err)
     sendError(res, err.message)
   }
 }
@@ -16,8 +17,9 @@ const sendMessage = async (req, res) => {
 const getConversation = async (req, res) => {
   try {
     const { muaProfileId, otherUserId } = req.query
+    console.log('getConversation params:', { muaProfileId, otherUserId })
     const messages = await messageService.getConversation(
-      req.user.userId, parseInt(otherUserId), parseInt(muaProfileId)
+      req.user.userId, otherUserId, parseInt(muaProfileId)
     )
     sendSuccess(res, messages)
   } catch (err) {
