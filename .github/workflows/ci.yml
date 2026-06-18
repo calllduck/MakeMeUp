@@ -34,10 +34,10 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL || 'https://makemeup.up.railway.app/api' }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
   backend-validate:
-    name: Backend — Install & Validate Schema
+    name: Backend — Install, Validate & Test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -61,3 +61,9 @@ jobs:
         run: npx prisma validate
         env:
           DATABASE_URL: postgresql://dummy:dummy@localhost:5432/dummy
+
+      - name: Run Tests
+        run: npm test
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
